@@ -5,12 +5,8 @@ import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import shop.mtcoding.blog.user.User;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
 
 @RequiredArgsConstructor
 @Repository
