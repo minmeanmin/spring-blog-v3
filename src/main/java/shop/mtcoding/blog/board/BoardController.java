@@ -1,20 +1,31 @@
 package shop.mtcoding.blog.board;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog.user.User;
 
 import java.util.List;
 
 @RequiredArgsConstructor // final이 붙은 친구들의 생성자를 만들어줘
 @Controller // new BoardRepository(IoC에서 BoardRepository를 찾아서 주입) -> IoC 컨테이너 등록
 public class BoardController {
-
     private final BoardRepository boardRepository;
+
+    private final HttpSession session;
+
+    @PostMapping("/board/save")
+    public String save(BoardRequest.SaveDTO requestDTO){
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        boardRepository.save(requestDTO.toEntity(sessionUser));
+
+        return "redirect:/";
+    }
 
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id){
@@ -28,11 +39,6 @@ public class BoardController {
 
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id){
-        return "redirect:/";
-    }
-
-    @PostMapping("/board/save")
-    public String save(){
         return "redirect:/";
     }
 
