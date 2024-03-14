@@ -21,7 +21,7 @@ public class Board {
     private String content;
 
     //@JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.LAZY)
     private User user; //db -> user_id
 
     @CreationTimestamp // pc -> db (날짜가 주입됨)
