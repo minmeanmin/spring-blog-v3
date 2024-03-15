@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,17 +14,25 @@ public class UserController {
     private final UserRepository userRepository;
     private final HttpSession session;
 
-//    @PostMapping("/login")
-//    public String login(UserRequest.LoginDTO requestDTO) {
-//        User sessionUser = userRepository.findByUsernameAndPassword();
-//
-//        if(sessionUser == null) {
-//            return "redirect:/login-form";
-//        }
-//
-//        session.setAttribute("sessionUser", sessionUser);
-//        return "redirect:/";
-//    }
+    @PostMapping("/login")
+    public String login(String username, String password) {
+        User sessionUser = userRepository.findByUsernameAndPassword(username, password);
+
+        if(sessionUser == null) {
+            return "redirect:/login-form";
+        }
+
+        session.setAttribute("sessionUser", sessionUser);
+        return "redirect:/";
+    }
+
+    @PostMapping("/user/update")
+    public String update(UserRequest.UpdateDTO reqDTO){
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        User newSessionUser = userRepository.updateById(sessionUser.getId(),reqDTO.getPassword(), reqDTO.getEmail());
+        session.setAttribute("sessionUser", newSessionUser);
+        return "redirect:/";
+    }
 
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO requestDTO){
@@ -44,7 +53,11 @@ public class UserController {
     }
 
     @GetMapping("/user/update-form")
-    public String updateForm() {
+    public String updateForm(HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        User user = userRepository.findById(sessionUser.getId());
+        request.setAttribute("user", user);
         return "user/update-form";
     }
 

@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +13,50 @@ public class UserRepositoryTest {
     @Autowired // DI
     private UserRepository userRepository;
 
+    @Autowired
+    private EntityManager em;
+
+    @Test
+    public void UpdateById_test(){
+        // given
+        int id = 1;
+        String password = "1604";
+        String email = "wed1604@naver.com";
+
+        // when
+        userRepository.updateById(id, password, email);
+        em.flush();
+
+        // then
+        System.out.println(userRepository.findById(id));
+
+    }
+
+    @Test
+    public void findById_test(){
+        // given
+        int id = 1;
+
+        // when
+        userRepository.findById(id);
+
+        // then
+
+
+    }
+
     @Test
     public void findByUsernameAndPassword_test(){
         // given
-        UserRequest.LoginDTO loginDTO = new UserRequest.LoginDTO();
-        loginDTO.setUsername("ssar");
-        loginDTO.setPassword("1234");
+        String username = "ssar";
+        String password = "1234";
 
         // when
-        //User user = userRepository.findByUsernameAndPassword(loginDTO);
+        User user = userRepository.findByUsernameAndPassword(username, password);
 
         // then
-        //Assertions.assertThat(user.getUsername()).isEqualTo("ssar");
+        Assertions.assertThat(user.getUsername()).isEqualTo("ssar");
+        Assertions.assertThat(user.getPassword()).isEqualTo("1234");
 
     }
 }
