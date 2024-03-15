@@ -18,6 +18,22 @@ public class BoardRepositoryTest {
     private EntityManager em;
 
     @Test
+    public void updateById_test(){
+        // given
+        int id = 1;
+        String title = "제목이다";
+        String content = "내용이다";
+
+        // when
+        boardRepository.updateById(id, title, content);
+        em.flush(); // 실제 코드는 작성할 필요가 없다(트랜잭션이 종료될 거라서). 테스트에서는 작성해주기
+
+        // then
+        System.out.println(boardRepository.findById(id));
+
+    }
+
+    @Test
     public void deleteById_test(){
         // given
         int id = 1;

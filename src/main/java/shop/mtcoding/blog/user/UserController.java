@@ -13,16 +13,24 @@ public class UserController {
     private final UserRepository userRepository;
     private final HttpSession session;
 
-    @PostMapping("/login")
-    public String login(UserRequest.LoginDTO requestDTO) {
-        User sessionUser = userRepository.findByUsernameAndPassword(requestDTO);
+//    @PostMapping("/login")
+//    public String login(UserRequest.LoginDTO requestDTO) {
+//        User sessionUser = userRepository.findByUsernameAndPassword();
+//
+//        if(sessionUser == null) {
+//            return "redirect:/login-form";
+//        }
+//
+//        session.setAttribute("sessionUser", sessionUser);
+//        return "redirect:/";
+//    }
 
-        if(sessionUser == null) {
-            return "redirect:/login-form";
-        }
+    @PostMapping("/join")
+    public String join(UserRequest.JoinDTO requestDTO){
+        User sessionUser = userRepository.save(requestDTO.toEntity());
 
-        session.setAttribute("sessionUser", sessionUser);
-        return "redirect:/";
+        session.setAttribute("sessionUser", sessionUser); // 회원가입 시, 자동 로그인
+        return "redirect:/login-form";
     }
 
     @GetMapping("/join-form")
