@@ -19,6 +19,14 @@ public class BoardRepository {
         em.persist(board);
     }
 
+    @Transactional
+    public void deleteById(int id) {
+        Query query = em.createQuery("delete from Board b where b.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+
     public List<Board> findAllV3(){
         String q1 = "select b from Board b order by b.id desc";
         List<Board> boardList = em.createQuery(q1 , Board.class).getResultList();

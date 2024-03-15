@@ -18,6 +18,19 @@ public class BoardRepositoryTest {
     private EntityManager em;
 
     @Test
+    public void deleteById_test(){
+        // given
+        int id = 1;
+
+        // when
+        boardRepository.deleteById(id); // delete query 발동함
+
+        // then
+        System.out.println("deleteById_test : " + boardRepository.findAll().size());
+
+    }
+
+    @Test
     public void findAllV2_test(){
         List<Board> boardList = boardRepository.findAllV2();
         System.out.println("findAllV2_test : 조회완료 쿼리 2번");
